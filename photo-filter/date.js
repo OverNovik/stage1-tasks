@@ -1,7 +1,9 @@
 const nextPicBtn = document.querySelector('.btn-next')
 const fileInput = document.querySelector('input[type="file"]')
-const img = document.querySelector('img')
-
+const img = new Image();
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+const download = document.querySelector('.btn-save');
 let i = 0;
 
 const allImages = getImages();
@@ -12,28 +14,32 @@ function getImages() {
   const imagesUrls = [];
 
   dayParts.forEach(dayPart => {
+    const today = new Date();
+    const hour = today.getHours();
+    if (hour < 12 && hour > 6 || hour === 6) {
+      dayPart = 'morning';
+  } else if (hour < 18 && hour > 12 || hour === 12) {
+      dayPart = 'day';
+  } else if (hour < 24 && hour > 18 || hour === 18){
+      dayPart = 'evening';
+  } else {
+      dayPart = 'night';
+  }
     const dayPartUrl = `${baseUrl}${dayPart}/`;
     for (let i = 1; i < 21; i++) {
       const photoImageName = i > 9 ? `${i}.jpg` : `0${i}.jpg`;
       imagesUrls.push(`${dayPartUrl}${photoImageName}`);
     }
   })
-  return imagesUrls
-};
-
-function viewBgImage(src) {
-  const body = document.querySelector('body')
-
-  img.src = src;
+  return imagesUrls;
 };
 
 function changeImageHandler() {
   const index = i % allImages.length;
   const imageSrc = allImages[index];
   
-  viewBgImage(imageSrc);
+  drawImage(imageSrc);
   i++;
-  activeBtn()
 };
 
 nextPicBtn.addEventListener('click', changeImageHandler);
@@ -46,11 +52,23 @@ fileInput.addEventListener('change', (e) => {
   }
   reader.readAsDataURL(file);
 })
-// function setRandomImage(greetingText, color, time) {
-//     const currentImages = imagesMap[time];
-//     const greeting = document.getElementById('greeting');
 
-//     greeting.textContent = greetingText;
-//     document.body.style.img = `url(${currentImages[Math.floor(Math.random() * currentImages.length)]})`;
-//     document.body.style.color = color;
-// };
+function drawImage(src) {
+  img.setAttribute('crossOrigin', 'anonymous');
+  img.src = src;
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+  };
+}
+
+download.addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.download = 'download.png';
+  link.href = canvas.toDataURL();
+  link.click();
+  link.delete;
+});
+
+changeImageHandler();

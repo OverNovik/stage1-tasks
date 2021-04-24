@@ -2,7 +2,8 @@
 const inputs = document.querySelectorAll('.filters input');
 const outputs = document.querySelectorAll('.filters output');
 const fullscreenBtn = document.querySelector('.fullscreen');
-const resetBtn = document.querySelector('.btn-reset')
+const resetBtn = document.querySelector('.btn-reset');
+
 
 
 function handleUpdate(e) {
@@ -25,7 +26,6 @@ resetBtn.addEventListener('click', () => {
 		input.value = resetValue
 		input.nextElementSibling.innerHTML = resetValue;
 	})
-	
 })
 
 function setFilter(name, value) {

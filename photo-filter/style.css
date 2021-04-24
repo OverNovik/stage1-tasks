@@ -126,9 +126,7 @@ output {
 .btn:active {
   background-color: #00c9b7;
 }
-.btn-active {
-  background-color: #00b4a4;
-}
+
 .btn-active:hover {
   background-color: #00c9b7;
 }
@@ -168,7 +166,7 @@ output {
   --saturate: 100%;
   --hue: 0deg;
 }
-img {
+canvas {
   height: 100%;
   width: 100%;
   max-height: 520px;
@@ -178,6 +176,13 @@ img {
     sepia(var(--sepia, 0%)) saturate(var(--saturate, 100%))
     hue-rotate(var(--hue, 0deg));
 }
+
+canvas {
+  border:1px solid #000;
+  width: 830px;
+  height: 520px;
+}
+
 .fullscreen {
   position: fixed;
   top: 120px;
