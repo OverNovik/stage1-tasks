@@ -59,14 +59,17 @@ function drawImage(src) {
   img.onload = () => {
     canvas.width = img.width;
     canvas.height = img.height;
+    ctx.filter = img.style.filter
     ctx.drawImage(img, 0, 0);
   };
 }
 
 download.addEventListener('click', () => {
+  const dataUrl = canvas.toDataURL("image/jpeg");
+  drawImage();
   const link = document.createElement('a');
   link.download = 'download.png';
-  link.href = canvas.toDataURL();
+  link.href = dataUrl;
   link.click();
   link.delete;
 });
